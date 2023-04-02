@@ -5,9 +5,6 @@ let package = Package(
     name: "DeviceCheckinManager",
     platforms: [
        .macOS(.v12)
-    ], 
-    products: [
-        .library(name: "DeviceCheckinStructs", targets: ["StructModels"])
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
@@ -17,7 +14,6 @@ let package = Package(
         .package(path: "../DeviceCheckin/")
     ],
     targets: [
-        .target(name: "StructModels"),
         .target(
             name: "App",
             dependencies: [

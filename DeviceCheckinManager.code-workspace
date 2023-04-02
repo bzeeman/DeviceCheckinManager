@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../DeviceCheckinTypes"
+		},
+		{
+			"path": "../DeviceCheckin"
+		}
+	],
+	"settings": {}
+}
