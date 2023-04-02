@@ -1,5 +1,6 @@
 import App
 import Vapor
+import DeviceCheckinWatcher
 
 var env = try Environment.detect()
 try LoggingSystem.bootstrap(from: &env)
