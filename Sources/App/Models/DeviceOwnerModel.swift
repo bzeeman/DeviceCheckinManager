@@ -59,7 +59,7 @@ public extension DeviceOwner {
     }
 }
 
-public struct DownTime: Codable, Identifiable{
+public struct DownTime: Content{
 
     public let id: UUID?
     public var startTime_DaySec: TimeInterval?

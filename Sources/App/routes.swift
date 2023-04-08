@@ -2,6 +2,11 @@ import Fluent
 import Vapor
 import DeviceCheckinWatcher
 import Foundation
+import DeviceCheckinTypes
+
+extension DeviceOwnerRequest: Content {}
+
+extension DownTimeRequest: Content {}
 
 func routes(_ app: Application) throws {
     app.get { req async in
@@ -24,33 +29,22 @@ func routes(_ app: Application) throws {
     }
 
     app.post("registerOwner") { req async -> HTTPStatus in 
-        guard let newOwner = try? req.content.decode(DeviceOwner.self) else {
-            return HTTPStatus.badRequest
-        }
-        let database = req.db
-        if let owners = try? await database.query(DeviceOwner.self)
-            .filter(\.$firstName == newOwner.firstName)
-            .all()  {
-                if owners.count > 0 {
-                    if owners.contains(where: { existingOwner in
-                        existingOwner.id == newOwner.id
-                        }
-                    ) {
-                        return HTTPStatus.conflict
-                    }
-                } else  {
-                    do {
-                        try await newOwner.create(on: database)
-                        return HTTPStatus.created
-                    } catch {
-                        let status = HTTPStatus.custom(code: 911, reasonPhrase: error.localizedDescription)
-                        return status
-                    }
+        do {
+            if let newOwner = req.body.data {
+                let d = Data(buffer: newOwner)
+                if let json = DeviceOwnerRequest.fromJSON(data: d) {
+                    print(json)
                 }
             }
-            return HTTPStatus.conflict
+            
+            let database = req.db
+        } catch {
+            print(error)
+            return HTTPStatus.custom(code: 911, reasonPhrase: error.localizedDescription)
+        }
         
-        
+        return HTTPStatus.conflict
+
     }
 
     try app.register(collection: CheckinController())

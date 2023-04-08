@@ -3,11 +3,13 @@ import Vapor
 import DeviceCheckinWatcher
 
 struct CheckinController: RouteCollection {
-    func boot(routes: RoutesBuilder) throws {
-        Task{
-            await DMesgWatcher.runner.run()
-        }
 
+    init() {
+        
+    }
+
+    func boot(routes: RoutesBuilder) throws {
+        
         let deviceOwners = routes.grouped("deviceowner")
         deviceOwners.get(use: index)
         deviceOwners.post(use: create)

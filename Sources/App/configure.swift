@@ -1,6 +1,7 @@
 import Fluent
 import FluentPostgresDriver
 import Vapor
+import DeviceCheckinWatcher
 
 // configures your application
 public func configure(_ app: Application) throws {
@@ -19,7 +20,11 @@ public func configure(_ app: Application) throws {
 
     
     app.migrations.add(CreateDeviceOwners())
+    try app.autoRevert().wait()
+    try app.autoMigrate().wait()
 
     // register routes
     try routes(app)
+    app.lifecycle.use(DeviceWatcher())
+
 }
